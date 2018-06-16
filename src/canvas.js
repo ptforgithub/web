@@ -1,10 +1,22 @@
 console.log("Hello canvas");
 
-function StartButtonClicked() {
-    console.log("Hello StartButtonClicked");
-    var canvas = document.querySelector('canvas');
-    var graph = new Graph(canvas, 600, 400);
-    graph.draw();
+var graphs = [];
+
+function CreateGraphClicked() {
+    console.log("Hello CreateGraphClicked");
+    var canvas1 = document.getElementById("Graph1");// document.querySelector('canvas');
+    var canvas2 = document.getElementById("Graph2");
+    graphs[0] = new Graph(canvas1, 300, 200);
+    graphs[1] = new Graph(canvas2, 300, 200);
+    graphs.forEach((graph, index) => {
+        graph.draw();
+    });
+}
+
+function StartStopClicked() {
+    graphs.forEach((graph, index) => {
+        graph.startStopAnimation();
+    });
 }
 
 function Graph(canvas, width, height) {
@@ -13,18 +25,18 @@ function Graph(canvas, width, height) {
     this.width = width;
     this.height = height;
     this.ctx = canvas.getContext("2d");
+    that.stopAnimation = false;
+    var animationFrameHandle;
+    this.circles = [];
 
     init();
 
     function init() {
         that.canvas.width = that.width;
         that.canvas.height = that.height;
-
-        console.log(that.canvas);
     }
 
     this.draw = function () {
-        var circles = [];
         var count = 20;
         var maxSpeed = 8;
         var colors = ["blue", "red", "green", "darkgray"];
@@ -36,13 +48,39 @@ function Graph(canvas, width, height) {
             var dy = (Math.random() - 0.5) * maxSpeed;
             var radius = 5 + (Math.random() * 20);
             var color = colors[Math.round(Math.random() * (colors.length - 1))];
-            circles[i] = new Circle(that.ctx, x, y, dx, dy, radius, color);
-            circles[i].draw();
+            that.circles[i] = new Circle(that.ctx, x, y, dx, dy, radius, color, that.width, that.height);
+            that.circles[i].draw();
         }
     }
+
+    this.animate = function () {
+        animationFrameHandle = requestAnimationFrame(that.animate);
+        if (that.startAnimation == false) {
+            return;
+        }
+        that.ctx.clearRect(0, 0, that.width, that.height);
+
+        that.circles.forEach((circle, index) => {
+            circle.update();
+        });
+    }
+
+    that.startStopAnimation = function () {
+        that.startAnimation = !that.startAnimation;
+        if (that.startAnimation === true) {
+            that.animate();
+        }
+        else {
+            cancelAnimationFrame(animationFrameHandle);
+        }
+    }
+
+    that.canvas.addEventListener('mousemove', function (event) {
+        console.log("" + event.offsetX + ", " + event.offsetY);
+    });
 }
 
-function Circle(drawingCtx, x, y, dx, dy, radius, color) {
+function Circle(drawingCtx, x, y, dx, dy, radius, color, boundingWidth, boundingHeight) {
     var that = this;
     that.c = drawingCtx;
     that.x = x;
@@ -51,6 +89,8 @@ function Circle(drawingCtx, x, y, dx, dy, radius, color) {
     that.dy = dy;
     that.radius = radius;
     that.color = color;
+    that.boundingWidth = boundingWidth;
+    that.boundingHeight = boundingHeight;
 
     this.draw = function () {
         that.c.beginPath();
@@ -58,4 +98,33 @@ function Circle(drawingCtx, x, y, dx, dy, radius, color) {
         that.c.strokeStyle = that.color;
         that.c.stroke();
     }
+
+    this.update = function () {
+        var newX = that.x + that.dx;
+        var newY = that.y + that.dy;
+
+        if (newX - that.radius < 0) {
+            newX = that.radius;
+            that.dx = -that.dx;
+        }
+        if (newX + that.radius > that.boundingWidth) {
+            newX = that.boundingWidth - that.radius;
+            that.dx = -that.dx;
+        }
+
+        if (newY - that.radius < 0) {
+            newY = that.radius;
+            that.dy = -that.dy;
+        }
+        if (newY + that.radius > that.boundingHeight) {
+            newY = that.boundingHeight - that.radius;
+            that.dy = -that.dy;
+        }
+
+        that.x = newX;
+        that.y = newY;
+
+        that.draw();
+    }
+
 }

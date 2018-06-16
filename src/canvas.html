@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>HTML Canvas</title>
@@ -7,7 +7,8 @@
 <body>
 
     <p>
-        <button id="Start" onclick="StartButtonClicked()">Click Me</button>
+        <button id="Start" onclick="CreateGraphClicked()">Create Graph</button>
+        <button id="StartStopAnimation" onclick="StartStopClicked()">Start/Stop Animation</button>
     </p>
 
     <style type="text/css">
@@ -17,7 +18,8 @@
         }
     </style>
     <div id="Canvas">
-        <canvas></canvas>
+        <canvas id="Graph1"></canvas>
+        <canvas id="Graph2"></canvas>
         <script type="text/javascript" src="canvas.js"></script>
     </div>
 </body>
