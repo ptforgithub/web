@@ -9,12 +9,22 @@
   </head>
   <body>
 
-    <div id="TheReactComponentTarget">Hi</h2>
+    <div id="TheReactComponentTarget">Hi</div>
+    <div id="TheNextTarget">Hi</div>
 
     <!-- Load our React component. -->
     <script type="text/babel">
 		ReactDOM.render(<h1>Hello React</h1>, document.getElementById("TheReactComponentTarget"));
 	</script>
 
-  </body>
+    <script type="text/babel">
+		class MyComponent extends React.Component {
+			render() {
+				return (<h3>A Component</h3>);
+			}
+		};
+		ReactDOM.render(<MyComponent />, document.getElementById("TheNextTarget"));
+	</script>
+
+	</body>
 </html>
