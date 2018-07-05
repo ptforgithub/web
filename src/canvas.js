@@ -77,6 +77,13 @@ function Graph(canvas, width, height) {
 
     that.canvas.addEventListener('mousemove', function (event) {
         console.log("" + event.offsetX + ", " + event.offsetY);
+        //that.canvas.style.left = "100px"; //(that.canvas.offsetLeft + 2) + "100px";
+        //that.canvas.style.top = "200px";// (that.canvas.offsetTop + 2) + "200px";
+        var divElement = document.getElementById("DivForFirstCanvas");
+        if (divElement) {
+            divElement.style.left = divElement.offsetLeft + 2 + "px";
+            divElement.style.top = divElement.offsetTop + 2 + "px";
+        }
     });
 }
 
