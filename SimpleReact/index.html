@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="ReactLib/react.production.min.js"></script>
+    <script type="text/javascript" src="ReactLib/react-dom.production.min.js"></script>
+    <script type="text/javascript" src="ReactLib/babel.min.js"></script>
+
+    <script type="text/babel" src="./Component01.js"></script>
+    <script type="module" src="./AnythingElse.js"></script>
+</head>
+
+<body>
+    <p>
+        <h1>The Simplest React Example</h1>
+
+        <div id="ComponentContainer01">React did not work !</div>
+    </p>
+    <script type="text/babel">
+        ReactDOM.render(
+            <Component01 />, document.getElementById("ComponentContainer01"));
+    </script>
+</body>
+
+</html>
